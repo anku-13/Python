@@ -1,3 +1,4 @@
+from random import randint
 
 def main() :
     from os import listdir
@@ -11,6 +12,9 @@ def main() :
     list3 = [pair for pair in [(x,y) for x in runs for y in runs] if not (int(pair[0].split(".")[1])+int(pair[1].split(".")[1]))%100]
     print(list3)
     print(len(list3))
+    
+    sevens = [ int(s) for s in [str(randint(1, 100)) for _ in range(20)] if "7" in s]
+    print(sevens)
 
 
 
