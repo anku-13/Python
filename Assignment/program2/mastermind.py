@@ -7,18 +7,18 @@
 # Author: Julia Froegel
 # Date: March 13, 2019
 #
-import colorama ## adds asnsi color escape sequences for windows
+
 from random import randint
 import copy
+import platform
 # colors - black white red green purple and orange
 game_pattern = []
+print_pattern = True
 
 def create_new_game() :
-    # returns valid game pattern
     return [randint(0,5) for _ in range(4)]
 
 def get_guess() :
-    # returns a valid game pattern indicating users get_guess
     guess = raw_input("Guess Peg Colors: _ _ _ _ : \n[B|W|R|G|P|O]   : ").split(" ")
     switcher = {
         "B" : 0,
@@ -33,7 +33,6 @@ def get_guess() :
     return guess;
 
 def evaluate_guess(pattern) :
-    # returns sequece of pegs
     global game_pattern
     b = 0
     w = 0
@@ -48,37 +47,44 @@ def evaluate_guess(pattern) :
     return [6 for _ in range(b)] + [7 for _ in range(w)]
 
 def print_board(guessed_board) :
-    # duh
     switcher = {
-        0 : "\033[1;30;40m B \033[1;34;40m",
-        1 : "\033[1;37;40m W \033[1;34;40m",
-        2 : "\033[1;31;40m R \033[1;34;40m",
-        3 : "\033[1;32;40m G \033[1;34;40m",
-        4 : "\033[1;35;40m P \033[1;34;40m",
-        5 : "\033[1;33;40m O \033[1;34;40m",
-        6 : "\033[1;30;40m b \033[1;34;40m",
-        7 : "\033[1;37;40m w \033[1;34;40m"
+        0 : " \033[1;30;47mB \033[1;36;40m",
+        1 : "\033[1;37;40m W \033[1;36;40m",
+        2 : "\033[1;31;40m R \033[1;36;40m",
+        3 : "\033[1;32;40m G \033[1;36;40m",
+        4 : "\033[1;35;40m P \033[1;36;40m",
+        5 : "\033[1;33;40m O \033[1;36;40m",
+        6 : " \033[1;30;47mb \033[1;36;40m",
+        7 : "\033[1;37;40m w \033[1;36;40m"
     }
-
     print("________________________________")
     for guess in guessed_board :
         print("|"+" ".join([switcher.get(x) for x in guess[0]])+"|"+" ".join([switcher.get(x) for x in guess[1]]))
     print("________________________________")
 
-def main() :
+def game_code() :
     global game_pattern
-    colorama.init()
+    print("\033[1;36;40m ___________MASTERMIND___________")
     guessed_board = []
     guess = []
     game_pattern = create_new_game()
-    print_board([[(game_pattern),[]]])
+    if print_pattern:
+        print_board([[(game_pattern),[]]])
     while(guess != game_pattern) :
         guess = get_guess()
         pegs = evaluate_guess(guess)
         guessed_board.append([guess, pegs])
         print_board(guessed_board)
-    colorama.deinit()
+    print("YOU WIN!!! \033[1;0;40m")
 
+def main() :
+    if platform.system() == "Windows" :
+        import colorama ## adds asnsi color escape sequences for windows
+        colorama.init()
+        game_code()
+        colorama.deinit()
+    else :
+        game_code()
 
 if __name__ == "__main__" :
     main()
