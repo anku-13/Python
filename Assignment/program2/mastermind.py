@@ -2,7 +2,9 @@
 # CS 224 Spring 2019
 # Programming Assignment 2
 #
-# Your wonderful, pithy, erudite description of the assignment.
+# A colorful command line version of mastermind
+#
+# NOTE you may need to pip install colorama if you want the colors to show up correctly on Windows
 #
 # Author: Julia Froegel
 # Date: March 13, 2019
@@ -64,12 +66,13 @@ def print_board(guessed_board) :
 
 def game_code() :
     global game_pattern
-    print("\033[1;36;40m ___________MASTERMIND___________")
+    print("\033[1;36;40m___________MASTERMIND___________")
     guessed_board = []
     guess = []
     game_pattern = create_new_game()
     if print_pattern:
         print_board([[(game_pattern),[]]])
+    print("Enter peg colors on one line seperated by spaces")
     while(guess != game_pattern) :
         guess = get_guess()
         pegs = evaluate_guess(guess)
